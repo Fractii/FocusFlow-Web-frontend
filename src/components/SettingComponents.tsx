@@ -1,166 +1,115 @@
 import React, { useState } from 'react';
+import EditIcon from '../assets/edit.png';
+import SaveIcon from '../assets/save.png'; // Import the save icon
 import OutlookIcon from '../assets/outlook.png';
 
+// Define type for edit mode state
+type EditModeState = {
+  fullName: boolean;
+  email: boolean;
+  password: boolean;
+  dob: boolean;
+  country: boolean;
+};
+
+// SettingComponents function component
 const SettingComponents: React.FC = () => {
-  const [formData, setFormData] = useState<{
-    fullName: string;
-    email: string;
-    password: string;
-    dateOfBirth: string;
-    country: string;
-  }>({
-    fullName: '',
-    email: '',
-    password: '',
-    dateOfBirth: '',
-    country: '',
+  // State to manage the edit mode of each field
+  const [editMode, setEditMode] = useState<EditModeState>({
+    fullName: false,
+    email: false,
+    password: false,
+    dob: false,
+    country: false
   });
 
-  const [formEditable, setFormEditable] = useState<boolean>(true); // Set initial state to true
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // Function to toggle edit mode for a specific field
+  const toggleEditMode = (field: keyof EditModeState) => {
+    setEditMode(prevState => ({
+      ...prevState,
+      [field]: !prevState[field]
+    }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form Data:', formData);
-    setFormEditable(false); // Set formEditable to false after submission
-  };
-
-  const handleToggleEditMode = () => {
-    setFormEditable(prevState => !prevState); // Toggle the formEditable state
-  };
-  
   return (
-    <div className="bg-customGray2 rounded-lg py-3 px-20 mb-[-5px]" style={{ minWidth: '200px', width: 'fit-content' }}>
-      <form onSubmit={handleSubmit} className="flex flex-col items-start">
-        <h2 className="text-white font-bold text-xl mb-4" style={{ textAlign: 'left' }}>
-          Profile
-        </h2>
-        <div className="mb-4 flex items-center">
-          <div className="h-16 w-16 bg-gray-300 rounded-full flex items-center justify-center">
-            {/* Placeholder for user profile image */}
-            <span>Image</span>
-          </div>
-        </div>
-        <div className="mb-4 flex items-center" style={{ width: '100%' }}>
-          <div className="mr-4">
-            <label htmlFor="fullName" className="block text-white font-medium mb-2" style={{ textAlign: 'left' }}>
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="px-3 py-2 border rounded-lg bg-customGray text-white border-transparent" // Removed border color
-              style={{ width: '300px' }}
-              disabled={!formEditable} // Disable input field if not in edit mode
-            />
-          </div>
-          <div className="mr-4">
-            <label htmlFor="email" className="block text-white font-medium mb-2" style={{ textAlign: 'left' }}>
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="px-3 py-2 border rounded-lg bg-customGray text-white border-transparent" // Removed border color
-              style={{ width: '300px' }}
-              disabled={!formEditable} // Disable input field if not in edit mode
-            />
-          </div>
-          <div className="mr-4">
-            <label htmlFor="password" className="block text-white font-medium mb-2" style={{ textAlign: 'left' }}>
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="px-3 py-2 border rounded-lg bg-customGray text-white border-transparent" // Removed border color
-              style={{ width: '300px' }}
-              disabled={!formEditable} // Disable input field if not in edit mode
-            />
-          </div>
-        </div>
-        {/* Next row for the last two fields */}
-        <div className="mb-4 flex items-center" style={{ width: '100%' }}>
-          <div className="mr-4">
-            <label htmlFor="dateOfBirth" className="block text-white font-medium mb-2" style={{ textAlign: 'left' }}>
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              id="dateOfBirth"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
-              className="px-3 py-2 border rounded-lg bg-customGray text-white border-transparent" // Removed border color
-              style={{ width: '300px' }}
-              disabled={!formEditable} // Disable input field if not in edit mode
-            />
-          </div>  
-          <div className="mr-4">
-            <label htmlFor="country" className="block text-white font-medium mb-2" style={{ textAlign: 'left' }}>
-              Country
-            </label>
-            <input
-              type="text"
-              id="country"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              className="px-3 py-2 border rounded-lg bg-customGray text-white border-transparent" // Removed border color
-              style={{ width: '300px' }}
-              disabled={!formEditable} // Disable input field if not in edit mode
-            />
-          </div>
-        </div>
-        {formEditable ? (
-            <button
-                type="submit" // Change the type to submit
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                style={{ marginRight: 'auto' }}
-            >
-                Save
+    <div className="max-w-4xl mx-auto p-8">
+      {/* Profile Heading */}
+      <h1 className="text-3xl font-bold text-white mb-8 text-left">Profile</h1>
+      {/* Grid for fields */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Full Name Field */}
+        <div className="mb-4">
+          <label htmlFor="fullName" className="block text-white mb-2 text-left">Full Name</label>
+          <div className="flex items-center">
+            <input type="text" id="fullName" className="border border-gray-300 rounded-l px-4 py-2 w-full h-10" disabled={!editMode.fullName} />
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r h-10" onClick={() => toggleEditMode('fullName')}>
+              {/* Toggle Button Icon */}
+              <img src={editMode.fullName ? SaveIcon : EditIcon} alt={editMode.fullName ? "Save Icon" : "Edit Icon"} className="h-6 w-6" />
             </button>
-            ) : (
-            <button
-                type="button" // Ensure it's a button type
-                onClick={handleToggleEditMode} // Attach the toggle edit mode function
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                style={{ marginRight: 'auto' }}
-            >
-                Edit
-            </button>
-            )}
-      </form>
-
-      <h2 className="text-white font-bold text-xl mt-8 mb-4" style={{ textAlign: 'left' }}>
-        Integration
-      </h2>
-      {/* Integration button */}
-      <div className="flex items-center mt-4">
-        <div style={{ width: '400px' }}> {/* Set a specific width */}
-          <button
-            onClick={() => { console.log('Integration button clicked'); }}
-            className="flex items-center justify-center w-auto py-2 px-3 text-white bg-customGray rounded-md focus:outline-none focus:border-blue-600"
-          >
-            <img src={OutlookIcon} alt="Outlook Icon" className="w-10 h-10" />
-          </button>
+          </div>
         </div>
+        {/* Email Field */}
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-white mb-2 text-left">Email</label>
+          <div className="flex items-center">
+            <input type="email" id="email" className="border border-gray-300 rounded-l px-4 py-2 w-full h-10" disabled={!editMode.email} />
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r h-10" onClick={() => toggleEditMode('email')}>
+              {/* Toggle Button Icon */}
+              <img src={editMode.email ? SaveIcon : EditIcon} alt={editMode.email ? "Save Icon" : "Edit Icon"} className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+        {/* Password Field */}
+        <div className="mb-4">
+          <label htmlFor="password" className="block text-white mb-2 text-left">Password</label>
+          <div className="flex items-center">
+            <input type="password" id="password" className="border border-gray-300 rounded-l px-4 py-2 w-full h-10" disabled={!editMode.password} />
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r h-10" onClick={() => toggleEditMode('password')}>
+              {/* Toggle Button Icon */}
+              <img src={editMode.password ? SaveIcon : EditIcon} alt={editMode.password ? "Save Icon" : "Edit Icon"} className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+        {/* Date of Birth Field */}
+        <div className="mb-4">
+          <label htmlFor="dob" className="block text-white mb-2 text-left">Date of Birth</label>
+          <div className="flex items-center">
+            <input type="date" id="dob" className="border border-gray-300 rounded-l px-4 py-2 w-full h-10" disabled={!editMode.dob} />
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r h-10" onClick={() => toggleEditMode('dob')}>
+              {/* Toggle Button Icon */}
+              <img src={editMode.dob ? SaveIcon : EditIcon} alt={editMode.dob ? "Save Icon" : "Edit Icon"} className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+        {/* Country Field */}
+        <div className="mb-4">
+          <label htmlFor="country" className="block text-white mb-2 text-left">Country</label>
+          <div className="flex items-center">
+            <input type="text" id="country" className="border border-gray-300 rounded-l px-4 py-2 w-full h-10" disabled={!editMode.country} />
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-r h-10" onClick={() => toggleEditMode('country')}>
+              {/* Toggle Button Icon */}
+              <img src={editMode.country ? SaveIcon : EditIcon} alt={editMode.country ? "Save Icon" : "Edit Icon"} className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Submit Button */}
+      <div className="mt-8">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Submit</button>
+      </div>
+      {/* Integration Heading */}
+      <h1 className="text-3xl font-bold text-white mb-8 text-left">Integration</h1>
+      {/* Outlook Button */}
+      <div className="flex items-center">
+        <button className="bg-customGray hover:bg-gray-500 text-white py-2 px-4 rounded flex items-center">
+          {/* Outlook Button Icon */}
+          <img src={OutlookIcon} alt="Outlook Icon" className="h-6 w-6" />
+          <span className="ml-2">Outlook</span>
+        </button>
       </div>
     </div>
   );
-};
+}
 
+// Exporting SettingComponents function component
 export default SettingComponents;

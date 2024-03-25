@@ -1,6 +1,8 @@
 import React from 'react';
 import Logo from '../src/assets/Logo.png';
 import RectanglesComponent from './components/RectangularComponent';
+import HeaderIcons from './components/HeaderComponent';
+import profilePicture from './profile/pic.jpg';
 
 const Dashboard: React.FC = () => {
   const handleLogoClick = () => {
@@ -16,6 +18,7 @@ const Dashboard: React.FC = () => {
           <div className="flex items-center h-full">
             <img src={Logo} alt="Logo" className="w-45 h-10 ml-4 mr-8 mt-[-6px]" onClick={handleLogoClick} />
           </div>
+          <HeaderIcons profilePicture={profilePicture} />
         </div>
 
         {/* Main Content */}

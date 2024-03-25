@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../src/assets/Logo.png';
-import Image from '../src/assets/LP.jpeg'; // Import your image here
+import Image from '../src/assets/LP.png'; // Import your image here
 
 const LandingPage: React.FC = () => {
 

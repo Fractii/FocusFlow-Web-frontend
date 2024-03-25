@@ -5,35 +5,39 @@ import SettingsIcon from '../assets/settings.png';
 import GPAIcon from '../assets/gpa.png';
 import Questions from './QuestionComponent'; // Import your Questions component
 import SettingComponent from './SettingComponents'; // Import your SettingComponent
+import CalendarComponent from './CalendarComponent'; // Import your CalendarComponent
 
 const RectanglesComponent: React.FC = () => {
   const [selectedButton, setSelectedButton] = useState('');
-  const [showSecondRectangle, setShowSecondRectangle] = useState(true);
   const [showQuestions, setShowQuestions] = useState(false); // State for showing questions
   const [showSettings, setShowSettings] = useState(false); // State for showing settings
+  const [showCalendar, setShowCalendar] = useState(false); // State for showing calendar
 
   const handleButtonClick = (buttonName: string) => {
     setSelectedButton(buttonName);
-    if (buttonName === 'inbox' || buttonName === 'calendar') {
-      setShowSecondRectangle(true);
+    if (buttonName === 'inbox') {
       setShowQuestions(false); // Hide questions when switching buttons
       setShowSettings(false); // Hide settings when switching buttons
+      setShowCalendar(false); // Hide calendar when switching buttons
+    } else if (buttonName === 'calendar') {
+      setShowQuestions(false); // Hide questions when switching buttons
+      setShowSettings(false); // Hide settings when switching buttons
+      setShowCalendar(true); // Show calendar when "Calendar" button is clicked
     } else if (buttonName === 'GPA') {
-      setShowSecondRectangle(false);
       setShowQuestions(true); // Show questions when Predict GPA is clicked
       setShowSettings(false); // Hide settings when Predict GPA is clicked
+      setShowCalendar(false); // Hide calendar when Predict GPA is clicked
     } else if (buttonName === 'settings') {
-      setShowSecondRectangle(false); // Hide the second rectangle when "Settings" button is clicked
       setShowQuestions(false); // Hide questions when "Settings" button is clicked
       setShowSettings(true); // Show settings when "Settings" button is clicked
+      setShowCalendar(false); // Hide calendar when "Settings" button is clicked
     }
-  };
-  
+  };  
+
   const handleSubmit = (answers: { [key: string]: string }) => {
     // Handle submission logic here
     console.log('Answers:', answers);
   };
-
 
   return (
     <>
@@ -72,13 +76,6 @@ const RectanglesComponent: React.FC = () => {
           <span className="font-bold">Predict GPA</span>
         </button>
         
-        <div className="w-full flex flex-col items-start">
-          {/* Placeholder for additional content */}
-          <div className="bg-customGray2 rounded-lg py-3 flex items-center flex-4 mb-[-5px]" style={{ width: '100%', minWidth: '200px', justifyContent: 'center', color: 'white' }}>
-            {/* Placeholder */}
-          </div>
-        </div>
-        
         {/* Fourth Button */}
         <button 
           className={`absolute bottom-6 left-6 flex items-center text-white rounded-full px-4 py-2 ${
@@ -90,18 +87,11 @@ const RectanglesComponent: React.FC = () => {
           <span className="font-bold">Settings</span>
         </button>
       </div>
-
-      {/* Second Rectangle */}
-      {showSecondRectangle && (
-        <div className="bg-customGray2 rounded-lg py-3 flex items-center flex-4 mb-[-5px] mr-2" style={{ width: '700px', minWidth: '200px', justifyContent: 'center' }}>
-          {/* Placeholder */}
-        </div>
-      )}
-
       {/* Third Rectangle */}
       <div className="bg-customGray2 rounded-lg py-10 flex items-start flex-4 mb-[-5px]" style={{ width: '100%', minWidth: '200px', justifyContent: 'left' }}>
         {showQuestions && <Questions onSubmit={handleSubmit} />} {/* Pass onSubmit prop to Questions component */}
         {showSettings && <SettingComponent />} {/* Display SettingComponent when showSettings is true */}
+        {showCalendar && <CalendarComponent />} {/* Display CalendarComponent when showCalendar is true */}
       </div>
     </>
   );
